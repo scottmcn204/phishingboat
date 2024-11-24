@@ -1,0 +1,13 @@
+Dataset
+^
+|
+|
+SQL Indexing -> ID, URL, HTML Code, Phishing flag
+^
+|
+|
+Our Tool -> goes to sql indexing to parse the HTML code from the filename and return each text with the flag
+^
+|
+|
+The model -> loop through our tool for training ... depending on the model we choose
