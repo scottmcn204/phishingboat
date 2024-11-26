@@ -1,10 +1,11 @@
-import parsing
+# import parsing
 from sklearn.model_selection import train_test_split
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.metrics import classification_report
+import pandas as pd
 
-features_df = parsing.main()
-
+# features_df = parsing.main()
+features_df = pd.read_csv("data/features.csv")
 # Train/test split
 X = features_df.drop('label', axis=1)
 y = features_df['label']

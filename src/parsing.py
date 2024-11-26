@@ -41,9 +41,12 @@ def main():
         html_feature = hmtl_features(row['website'])
         combined_features = {**url_feature, **html_feature, 'label': row['result']}
         features_list.append(combined_features)
-        if counter == 100 :
-            break
+        # if counter == 100 :
+        #     break
     features_df = pd.DataFrame(features_list)
     with pd.option_context('display.max_rows', None, 'display.max_columns', None):
         print(features_df.to_string())
     return features_df
+
+features_df = main()
+features_df.to_csv('features.csv')
