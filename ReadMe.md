@@ -22,7 +22,7 @@ By developing this program we hope to create a program that can be used by busin
 Week 1\
 Curating a dataset and project proposal :)\
 Week 2\
-Researching other solutions and planning our approach + parse some data!\
+Researching other solutions and planning our approach + parse some data! :)\
 Week 3\
 Begin implementing model\
 Week 4\
