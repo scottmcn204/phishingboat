@@ -2,9 +2,6 @@ import pandas as pd
 import re
 from bs4 import BeautifulSoup
 
-
-data = pd.read_csv('data/index.csv')
-
 def url_features(url):
     features = {
         'url_length' : len(url),
@@ -32,18 +29,21 @@ def hmtl_features(path_to_html):
         features = {}
         print(path_to_html + " not found :(")
     return features
-    
-features_list = []
-counter = 0
-for index, row in data.iterrows():
-    counter += 1
-    print("parsing row " + str(row['rec_id']))
-    url_feature = url_features(row['url'])
-    html_feature = hmtl_features(row['website'])
-    combined_features = {**url_feature, **html_feature, 'label': row['result']}
-    features_list.append(combined_features)
-    if counter == 100 :
-        break
-features_df = pd.DataFrame(features_list)
-with pd.option_context('display.max_rows', None, 'display.max_columns', None):
-    print(features_df.to_string())
+
+def main(): 
+    data = pd.read_csv('data/index.csv')
+    features_list = []
+    counter = 0
+    for index, row in data.iterrows():
+        counter += 1
+        print("parsing row " + str(row['rec_id']))
+        url_feature = url_features(row['url'])
+        html_feature = hmtl_features(row['website'])
+        combined_features = {**url_feature, **html_feature, 'label': row['result']}
+        features_list.append(combined_features)
+        if counter == 500 :
+            break
+    features_df = pd.DataFrame(features_list)
+    with pd.option_context('display.max_rows', None, 'display.max_columns', None):
+        print(features_df.to_string())
+    return features_df
