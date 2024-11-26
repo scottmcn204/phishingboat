@@ -1,0 +1,4 @@
+- external images / JS (http or src=)
+- containg gift free promotion win prize
+- gtag and jquery 
+- 
