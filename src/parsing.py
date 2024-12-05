@@ -5,9 +5,11 @@ from bs4 import BeautifulSoup
 def url_features(url):
     features = {
         'url_length' : len(url),
-        'special_char_num' : sum(1 for char in url if char in ['@', '#', '.', '/', '~', ',', '$']),
+        'special_char_num' : sum(1 for char in url if char in ['@', '#', '/', '~', ',', '$']),
         'contains_login' : int('login' in url),
-        'is_ip' : int(bool(re.match(r'\d+\.\d+\.\d+\.\d+', url))),
+        'numbers_num' : sum(1 for char in url if char in ['1', '2', '3', '4', '5', '6', '7', '8', '9', '0']),
+        'is_http': int("http://" in url),
+        'dots_num' :  sum(1 for char in url if char in ['.'])
     }
     return features
 
@@ -19,11 +21,11 @@ def hmtl_features(path_to_html):
                 'external_link_num' : len(soup.find_all('a', href=lambda x: x and 'http' in x)),
                 'iframes_num' : len(soup.find_all('iframe')),
                 'script_num' : len(soup.find_all('script')),
-                'mailto_num' : len(soup.find_all('mailto:')),
-                'external_script_num' : len(soup.find_all('script src')),
-                'external_img_num' : len(soup.find_all('img src')),
-                'external_style_num' : len(soup.find_all('link href')),
-                'suspicious_keyword' : int(any(word in soup.text for word in ['verify', 'update', 'secure']))
+                'external_script_num' : len(soup.find_all('script', src=True)),
+                'external_img_num' : len(soup.find_all('img', src=True)),
+                'external_style_num' : len(soup.find_all('link', href=True)),
+                'suspicious_keyword' : int(any(word in soup.text for word in ['verify', 'update', 'secure', 'gift', 'free', 'promotion', 'win', 'prize', 'virus'])),
+                'overall_length' : len(soup),
             }
     except:
         features = {}

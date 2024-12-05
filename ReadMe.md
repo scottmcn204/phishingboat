@@ -24,11 +24,11 @@ Curating a dataset and project proposal :)\
 Week 2\
 Researching other solutions and planning our approach + parse some data! :)\
 Week 3\
-Begin implementing model\
+Begin implementing model :)\
 Week 4\
-Training our own model\
+Training our own model :)\
 Week 5\
-Continue training while adjusting parameters\
+Continue training while adjusting parameters and begin report\
 Week 6\
 Christmas Holiday and continue any training that needs to be done\
 Week 7\
