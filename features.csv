@@ -1,4 +1,0 @@
-,url_length,special_char_num,contains_login,numbers_num,is_http,dots_num,external_link_num,iframes_num,script_num,external_script_num,external_img_num,external_style_num,suspicious_keyword,overall_length,label
-0,23,4,0,0,1,2,171,0,19,12,69,8,1,1,1
-1,64,6,0,4,1,2,0,0,4,3,5,2,0,1,1
-2,32,3,0,0,0,2,0,0,2,1,0,0,0,3,0

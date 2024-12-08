@@ -4,12 +4,12 @@ from bs4 import BeautifulSoup
 
 def url_features(url):
     features = {
-        'url_length' : len(url),
-        'special_char_num' : sum(1 for char in url if char in ['@', '#', '/', '~', ',', '$']),
+        'url_length' : len(str(url)),
+        'special_char_num' : sum(1 for char in str(url) if char in ['@', '#', '/', '~', ',', '$']),
         'contains_login' : int('login' in url),
         'numbers_num' : sum(1 for char in url if char in ['1', '2', '3', '4', '5', '6', '7', '8', '9', '0']),
         'is_http': int("http://" in url),
-        'dots_num' :  sum(1 for char in url if char in ['.'])
+        'dots_num' :  sum(1 for char in url if char in ['.']),
     }
     return features
 
@@ -51,4 +51,4 @@ def main():
     return features_df
 
 features_df = main()
-features_df.to_csv('features.csv')
+features_df.to_csv('features.csv') 
