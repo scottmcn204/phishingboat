@@ -28,7 +28,8 @@ Begin implementing model :)\
 Week 4\
 Training our own model :)\
 Week 5\
-Continue training while adjusting parameters and begin report\
+Continue training while adjusting parameters (rare event prediction) and begin report\
+-> Dawid : ML with hmtl and adjust neural net; Scott -> package for inference, and try rare event prediction
 Week 6\
 Christmas Holiday and continue any training that needs to be done\
 Week 7\
