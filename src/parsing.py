@@ -17,6 +17,7 @@ def hmtl_features(path_to_html):
     try:
         with open("data/dataset/" + path_to_html.strip('\''), 'r', encoding='utf-8') as file :
             soup = BeautifulSoup(file, 'html.parser')
+            html = soup.prettify( formatter="html" )
             features = {
                 'external_link_num' : len(soup.find_all('a', href=lambda x: x and 'http' in x)),
                 'iframes_num' : len(soup.find_all('iframe')),
@@ -30,7 +31,7 @@ def hmtl_features(path_to_html):
     except:
         features = {}
         print(path_to_html + " not found :(")
-    return features
+    return features, html
 
 def main(): 
     data = pd.read_csv('data/index.csv')
@@ -40,8 +41,9 @@ def main():
         counter += 1
         print("parsing row " + str(row['rec_id']))
         url_feature = url_features(row['url'])
-        html_feature = hmtl_features(row['website'])
-        combined_features = {**url_feature, **html_feature, 'label': row['result']}
+        html_feature, html_raw = hmtl_features(row['website'])
+        combined_features = {**url_feature, **html_feature, 'label': row['result'],
+        'html_raw': html_raw}
         features_list.append(combined_features)
         # if counter == 100 :
         #     break
@@ -52,3 +54,6 @@ def main():
 
 features_df = main()
 features_df.to_csv('features.csv') 
+
+
+# rare event prediction
