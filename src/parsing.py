@@ -41,7 +41,7 @@ def hmtl_features(path_to_html):
     except:
         features = {}
         print(path_to_html + " not found :(")
-    return features
+    return features, html
 
 def html_features_from_text(html_text):
     try:            
