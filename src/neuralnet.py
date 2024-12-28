@@ -101,7 +101,7 @@ def train_neuralnet():
 
     print(clf.score(X_test, y_test))
 
-def perform_inference(x_inf, label = None, path):
+def perform_inference(x_inf, path, label = None):
 
     # load model from pickle file if exists
     if os.path.exists(path):

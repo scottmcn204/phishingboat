@@ -30,6 +30,7 @@ def hmtl_features(path_to_html):
             }
     except:
         features = {}
+        html = None
         print(path_to_html + " not found :(")
     return features, html
 
