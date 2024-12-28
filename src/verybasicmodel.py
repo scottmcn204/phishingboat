@@ -5,6 +5,8 @@ from sklearn.metrics import classification_report
 from sklearn.model_selection import cross_val_score
 import pandas as pd
 from imblearn.over_sampling import RandomOverSampler
+from skl2onnx import convert_sklearn
+from skl2onnx.common.data_types import FloatTensorType
 
 def imp_features(model, features_df):
     feature_names = features_df.columns
@@ -56,3 +58,11 @@ print("%0.2f accuracy for non balanced out dataset with a standard deviation of 
 
 
 
+
+initial_type = [('float_input', FloatTensorType([None, X.shape[1]]))]
+
+# Convert the model
+onnx_model = convert_sklearn(model, initial_types=initial_type)
+
+with open("model.onnx", "wb") as f:
+    f.write(onnx_model.SerializeToString())

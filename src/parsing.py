@@ -13,6 +13,16 @@ def url_features(url):
     }
     return features
 
+def url_features_inference(url) : 
+    features = [
+        len(str(url)),
+        sum(1 for char in str(url) if char in ['@', '#', '/', '~', ',', '$']),
+        int('login' in url),
+        sum(1 for char in url if char in ['1', '2', '3', '4', '5', '6', '7', '8', '9', '0']),
+        int("http://" in url),
+        sum(1 for char in url if char in ['.']),
+    ]
+    return features
 def hmtl_features(path_to_html):
     try:
         with open("data/dataset/" + path_to_html.strip('\''), 'r', encoding='utf-8') as file :
@@ -34,6 +44,24 @@ def hmtl_features(path_to_html):
         print(path_to_html + " not found :(")
     return features, html
 
+def html_features_from_text(html_text):
+    try:            
+        soup = BeautifulSoup(html_text, 'html.parser')
+        features = [
+            len(soup.find_all('a', href=lambda x: x and 'http' in x)),
+            len(soup.find_all('iframe')),
+            len(soup.find_all('script')),
+            len(soup.find_all('script', src=True)),
+            len(soup.find_all('img', src=True)),
+            len(soup.find_all('link', href=True)),
+            int(any(word in soup.text for word in ['verify', 'update', 'secure', 'gift', 'free', 'promotion', 'win', 'prize', 'virus'])),
+            len(soup),
+        ]
+    except:
+        features = []
+        print("problem processing html text")
+    return features
+
 def main(): 
     data = pd.read_csv('data/index.csv')
     features_list = []
@@ -53,8 +81,6 @@ def main():
         print(features_df.to_string())
     return features_df
 
-features_df = main()
-features_df.to_csv('features.csv') 
-
-
-# rare event prediction
+def run_features() :
+    features_df = main()
+    features_df.to_csv('features2.csv') 
