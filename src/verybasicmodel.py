@@ -16,7 +16,8 @@ def imp_features(model, features_df):
 
 # features_df = parsing.main()
 features_df = pd.read_csv("data/features.csv")
-
+features_df = features_df.loc[:, ~features_df.columns.str.contains('^Unnamed')]
+print(features_df)
 # Train/test split
 X = features_df.drop('label', axis=1)
 y = features_df['label']
