@@ -2,9 +2,10 @@ from sklearn.neural_network import MLPClassifier
 from sklearn.model_selection import train_test_split
 from sklearn.model_selection import GridSearchCV
 from sklearn.metrics import classification_report
+from sklearn.model_selection import cross_val_score
+from skl2onnx import convert_sklearn
+from skl2onnx.common.data_types import FloatTensorType
 import pandas as pd
-import pickle
-import os
 
 # features_df = parsing.main()
 features_df = pd.read_csv("data/features.csv")
@@ -38,7 +39,7 @@ def find_best_model_with_params(params = None):
         params = parameter_space
     # Run GridSearch
     # n_jobs = -1 uses all CPU cores
-    clf = GridSearchCV(mlp, parameter_space, n_jobs=-1, cv=3)
+    clf = GridSearchCV(mlp, parameter_space, n_jobs=-1, cv=10)
     clf.fit(X_train, y_train)
 
     # Show the results
@@ -61,13 +62,15 @@ def find_best_model_with_params(params = None):
 
 def safe_model(model, path):
 
-    # Create file for saving trained model as a pickle file
-    path = "neuralNet_trained.pkl"
-    model_pkl_file = path 
+    # Create file for saving trained model as a onnx file
+    initial_type = [('float_input', FloatTensorType([None, X.shape[1]]))]
+
+    # Convert the model
+    onnx_model = convert_sklearn(model, initial_types=initial_type)
 
     # Safe the trained model to the file
-    with open(model_pkl_file, 'wb') as file:  
-        pickle.dump(model, file)
+    with open("model_neuralnet.onnx", "wb") as f:
+        f.write(onnx_model.SerializeToString())
 
 def train_neuralnet():
 
@@ -85,34 +88,16 @@ def train_neuralnet():
         'epsilon':1e-08,
         'n_iter_no_change' : 10, 'max_fun':15000}
 
-    # Default values for the parameters of the MLPClassifier
-    # MLPClassifier(hidden_layer_sizes=(100,),
-    #  activation='relu', *, solver='adam', alpha=0.0001,
-    #  batch_size='auto', learning_rate='constant',
-    #  learning_rate_init=0.001, power_t=0.5, max_iter=200,
-    #  shuffle=True, random_state=None, tol=0.0001,
-    #  verbose=False, warm_start=False, momentum=0.9,
-    #  nesterovs_momentum=True, early_stopping=False,
-    #  validation_fraction=0.1, beta_1=0.9, beta_2=0.999,
-    #  epsilon=1e-08, n_iter_no_change=10, max_fun=15000)
-
     clf = MLPClassifier(**params)
     clf.fit(X_train, y_train)
-
     print(clf.score(X_test, y_test))
 
-def perform_inference(x_inf, path, label = None):
+    # Use k fold cross validation
+    model = MLPClassifier(**params)
+    scores = cross_val_score(model, X, y, cv=10)
+    print(scores)
+    print("%0.2f accuracy for non balanced out dataset with a standard deviation of %0.2f" % (scores.mean(), scores.std()))
 
-    # load model from pickle file if exists
-    if os.path.exists(path):
-        with open(path, 'rb') as file:  
-            model = pickle.load(file)
-        # evaluate model 
-        y_predict = model.predict(x_inf)
-        # check results
-        if label != None:
-            print(classification_report(label, y_predict)) 
-    else:
-        print("The model couldn't be found! Make sure to train a model first")
-        exit(1)
+    return model
+
     
