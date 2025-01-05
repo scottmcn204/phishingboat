@@ -41,3 +41,19 @@ Finish our report, framework through the project\
 [1] How can phishing affect a business, 2023. Link: https://www.cybsafe.com/blog/how-can-phishing-affect-a-business/ (accessed on 11.11.2024)\
 [2] Phishing Websites Dataset, 2021. Link: https://data.mendeley.com/datasets/n96ncsr5g4/1 (accessed on 11.11.2024)\
 [3] Suhaima Jamal, Hayden Wimmer, Iqbal H. Sarker:  An improved transformer-based model for detecting phishing, spam and ham emails: A large language model approach, 2024. Link: https://onlinelibrary.wiley.com/doi/full/10.1002/spy2.402 (accessed on 11.11.2024)\
+
+### How to run the program
+1. Parsing.py:
+By running the run_features() method the parser goes over all URLs and labels stored in the index.csv file and matches them to the according html code files in the data/dataset folder. They are then parsed using the BeautifulSoup library and stored in a csv specified in the last line of run_features(). The class also provides methods for the parsing of a live html page (see the methods: html_features_from_text() and url_features_inference())) which the class receives when running the inference.py file.
+
+2. Randomforest.py: 
+when running the python class the features.csv file is loaded stored in the data folder(Need to make sure this file is available, else run parsing first and move the file to the specified path). The train/test split is then done automatically and the model is once trained on it and then the results are printed out. Afterwords a new model is trained and a 10 fold crossvalidation is performed. At the end the model is saved as a onnx file to be later used in the inference class. The commented out code provides functionality for balancing out the dataset which was however excluded in the solution as it lead to worse overall results. The method imp_features(model, features_df) prints out the most important features in the randomForest and their Gini Importance
+
+3. Neuralnet.py: 
+to run the neuralnet model it is enough to run the train_neuralnet() method, which returns the trained model. It can be then safed as an onnx model using the safe_mode() method. There is also the additional method find_best_model_with_params(params = None) which provided functionality to perform GridSearch and find the best parameters for a model out of a parameterSpace provided
+
+4. Transformer.py:
+To run the transformer model it is enough to run the transformer.py file and make sure the features2.csv is availabe under the data/feature2.csv path, as this csv file contains the raw-html feature with the html code of each datafile as a string. It is worth noting that due to the large size of the feature2.csv file the whole featureset doesn't fit into memory, which is why a smaller subset/chuk has to be used.
+
+5. Inference.py: 
+To run inference it is enough to run the python file and input an URL into the terminal during execution. At the end the predicted label will be printed out.
